@@ -7,8 +7,8 @@ A static lead-generation website connecting East Valley AZ homeowners with local
 ## Before You Go Live — Two Things You Must Do
 
 ### 1. Replace the Phone Number
-Search every HTML file for `(480) 555-0100` and replace with your real phone number.
-Also update `+14805550100` (the tel: link format) to match.
+Search every HTML file for `(480) 270-4423` and replace with your real phone number.
+Also update `+14802704423` (the tel: link format) to match.
 
 Quick command to find all instances:
 ```bash
