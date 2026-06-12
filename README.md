@@ -6,26 +6,30 @@ A static lead-generation website connecting East Valley AZ homeowners with local
 
 ## Before You Go Live — Two Things You Must Do
 
-### 1. Replace the Phone Number
-Search every HTML file for `(480) 270-4423` and replace with your real phone number.
-Also update `+14802704423` (the tel: link format) to match.
+### 1. Configure Phone, Forms, and Lead Routing
+Edit **`js/site-config.js`** — this is the single source of truth for:
 
-Quick command to find all instances:
-```bash
-grep -r "555-0100" ~/projects/az-swamp-cooler-repair/
-```
+- **Call-tracking number** shown on the site (`phone.display`, `phone.tel`, `phone.e164`)
+- **Formspree form ID** (`forms.formspreeFormId`)
+- **Owner lead email** (`leads.ownerEmail`) — set as primary recipient in Formspree
+- **Renter forwarding** (`leads.renterForwardEmail`, `leads.renterForwardingEnabled`)
+- **Forwarding note** for your records (`leads.forwardingNote`, `phone.callTracking.forwardingDestinationNote`)
+
+Do **not** hardcode a renter's direct phone number in HTML. Change the tracking number in `site-config.js` and update the forwarding destination in your call-tracking provider dashboard (CallRail, CallTrackingMetrics, etc.).
+
+Copy `js/site-config.example.js` as a reference template.
 
 ### 2. Set Up Formspree (Lead Form)
 1. Go to [formspree.io](https://formspree.io) and sign up with ryano72@gmail.com
 2. Create a new form — name it "AZ Swamp Cooler Repair Leads"
 3. Copy the 8-character form ID (e.g. `xyzabcde`)
-4. Replace `PLACEHOLDER` in every form's action URL with your real ID:
-```bash
-grep -r "PLACEHOLDER" ~/projects/az-swamp-cooler-repair/
-```
-Replace `https://formspree.io/f/PLACEHOLDER` with `https://formspree.io/f/YOUR_REAL_ID`
+4. Set the Formspree form ID in **`js/site-config.js`** (`forms.formspreeFormId`)
 
-Free plan: 50 submissions/month. Upgrade for unlimited.
+Free plan: 50 submissions/month. Upgrade for unlimited and CC/workflow routing.
+
+**Lead tracking fields** (page URL, landing page, city page, UTM params, gclid, etc.) are injected automatically by `js/main.js` on every `.lead-form` submit.
+
+**When leasing to a renter:** set `renterForwardEmail`, enable `renterForwardingEnabled`, and update `forwardingNote`. On Formspree paid plans, renter CC is added via `_cc` automatically.
 
 ---
 
@@ -109,6 +113,8 @@ Since this is a static site, updating content means editing the HTML files direc
 /faq/                       FAQ (15 Q&As, accordion)
 /how-it-works/              How the referral service works
 /contact/                   Contact / lead form
+/privacy-policy/            Privacy policy
+/terms/                     Terms of service
 /thank-you/                 Form submission confirmation (noindexed)
 /blog/                      Blog listing
 /blog/[post-slug]/          5 blog posts
@@ -117,7 +123,9 @@ Since this is a static site, updating content means editing the HTML files direc
 /robots.txt                 Crawler instructions
 /vercel.json                Clean URLs config
 /css/style.css              All styles
-/js/main.js                 Mobile menu, smooth scroll, header scroll
+/js/site-config.js          Phone, Formspree, owner/renter lead routing config
+/js/site-config.example.js  Config template
+/js/main.js                 Mobile menu, lead tracking fields, phone from config
 ```
 
 ---
