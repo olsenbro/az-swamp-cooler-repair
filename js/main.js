@@ -19,7 +19,8 @@
     'utm_content',
     'gclid',
     'gbraid',
-    'wbraid'
+    'wbraid',
+    'session_id'
   ];
 
   // --- Sticky header shadow ---
@@ -258,6 +259,12 @@
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gbraid', 'wbraid'].forEach(function (key) {
       setHiddenValue(form, key, getStored(key));
     });
+
+    try {
+      setHiddenValue(form, 'session_id', sessionStorage.getItem('_sid') || '');
+    } catch (err) {
+      setHiddenValue(form, 'session_id', '');
+    }
   }
 
   function applyLeadRoutingFields(form, cfg) {
