@@ -33,11 +33,11 @@ window.SITE_CONFIG = {
 
   phone: {
     /** Shown on the website (use your call-tracking number, not the renter's direct line). */
-    display: '(480) 270-4423',
+    display: '(480) 690-1843',
     /** Used in tel: links — digits only, no +1. */
-    tel: '4802704423',
+    tel: '4806901843',
     /** Used in schema.org JSON-LD. */
-    e164: '+14802704423',
+    e164: '+14806901843',
     callTracking: {
       provider: 'Set up in CallRail, CallTrackingMetrics, or similar',
       forwardingDestinationNote: 'Owner intake line — update when leasing to a renter'
