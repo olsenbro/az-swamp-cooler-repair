@@ -28,7 +28,12 @@
   <meta property="og:description" content="Get connected with a licensed local swamp cooler repair pro in Mesa, Gilbert, Chandler, and the East Valley. Free quotes — same-day help available.">
   <meta property="og:url" content="https://www.azswampcoolerrepair.com/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://www.azswampcoolerrepair.com/android-chrome-512x512.png">
+  <meta property="og:image" content="https://www.azswampcoolerrepair.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="East Valley swamp cooler repair — Mesa, Gilbert, Chandler and surrounding cities">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.azswampcoolerrepair.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -36,32 +41,102 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "LocalBusiness",
+    "@id": "https://www.azswampcoolerrepair.com/#business",
     "name": "AZ Swamp Cooler Repair",
-    "description": "Helping East Valley homeowners connect with local evaporative cooler repair professionals in Mesa, Gilbert, Chandler, Queen Creek, San Tan Valley, Tempe, and Apache Junction, Arizona.",
+    "description": "Helping East Valley homeowners connect with licensed local evaporative cooler repair professionals in Mesa, Gilbert, Chandler, Queen Creek, San Tan Valley, Tempe, and Apache Junction, Arizona.",
     "url": "https://www.azswampcoolerrepair.com",
     "telephone": "+14806901843",
     "email": "leads@azswampcoolerrepair.com",
+    "image": "https://www.azswampcoolerrepair.com/og-image.png",
     "logo": "https://www.azswampcoolerrepair.com/android-chrome-512x512.png",
-    "areaServed": [
-      {"@type": "City", "name": "Mesa"},
-      {"@type": "City", "name": "Gilbert"},
-      {"@type": "City", "name": "Chandler"},
-      {"@type": "City", "name": "Queen Creek"},
-      {"@type": "City", "name": "San Tan Valley"},
-      {"@type": "City", "name": "Tempe"},
-      {"@type": "City", "name": "Apache Junction"}
-    ],
-    "makesOffer": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "itemOffered": {
-        "@type": "Service",
-        "name": "Evaporative Cooler Repair Connection",
-        "description": "Free service request connecting homeowners with local swamp cooler repair professionals"
+    "priceRange": "$$",
+    "serviceType": "Evaporative Cooler Repair",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 33.4152,
+      "longitude": -111.8315
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "07:00",
+        "closes": "19:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "14:00"
       }
+    ],
+    "areaServed": [
+      {"@type": "City", "name": "Mesa", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "Gilbert", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "Chandler", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "Queen Creek", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "San Tan Valley", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "Tempe", "containedInPlace": {"@type": "State", "name": "Arizona"}},
+      {"@type": "City", "name": "Apache Junction", "containedInPlace": {"@type": "State", "name": "Arizona"}}
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Evaporative Cooler Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Evaporative Cooler Repair",
+            "serviceType": "Evaporative Cooler Repair",
+            "description": "Connect with local pros for emergency repair, pump and motor service, pad replacement, and spring startup.",
+            "provider": {"@id": "https://www.azswampcoolerrepair.com/#business"},
+            "areaServed": {"@type": "AdministrativeArea", "name": "East Valley, Arizona"}
+          }
+        }
+      ]
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What's the difference between an evaporative cooler and a swamp cooler?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nothing — they're the same thing. Swamp cooler is the common nickname; evaporative cooler is the technical term. Both refer to systems that cool air by pulling it through water-soaked pads."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is my swamp cooler blowing hot air?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most common causes: failed pump (pads aren't getting wet), clogged distribution tubing from hard water mineral buildup, outside temperature above ~105°F, low fan speed, or worn-out pads that need replacement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does a typical evaporative cooler repair cost in Gilbert or Mesa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pad replacement: $75–$150. Pump replacement: $100–$200. Belt: $75–$125. Float valve: $75–$125. Motor: $200–$450. Spring startup service: $75–$175. These are estimates — actual quotes vary by unit size and parts needed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does AZ Swamp Cooler Repair work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Request a free quote or call and get connected with an experienced local evaporative cooler repair pro serving your area. There is no charge to request a quote and no obligation to hire."
+        }
+      }
+    ]
   }
   </script>
 </head>
@@ -129,6 +204,7 @@
     <div class="hero-inner">
       <div class="hero-content">
         <h1>Swamp Cooler Not Working? Get Fast East Valley Repair Help Today.</h1>
+        <p class="at-a-glance"><strong>At a Glance:</strong> AZ Swamp Cooler Repair connects East Valley homeowners in Mesa, Gilbert, Chandler, and nearby cities with licensed local evaporative cooler repair pros — free quotes in minutes, same-day help often available.</p>
         <p class="hero-sub">When your evaporative cooler breaks down in the East Valley, get connected with a local repair pro — fast. Request a free quote in minutes and get your cooler back up and running.</p>
         <div class="hero-ctas">
           <a href="#quote-form" class="btn btn-primary btn-lg">Get a Free Quote</a>
@@ -315,6 +391,17 @@
       </table>
     </div>
     <p style="margin-top:1rem; font-size:0.9rem; color:var(--gray-600);">Not sure if you're in the service area? <a href="/contact/">Request a free quote</a> or call — we cover the entire East Valley.</p>
+    <div class="service-area-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d426027!2d-111.7509!3d33.3773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f10!3m3!1m2!1s0x872bb3c75c8d3055%3A0x9db82d2bad257e99!2sEast%20Valley%2C%20AZ!5e0!3m2!1sen!2sus!4v1718465937000!5m2!1sen!2sus"
+        width="100%"
+        height="350"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="East Valley Arizona swamp cooler repair service area map"></iframe>
+    </div>
     <div class="cities-grid" style="margin-top:1.5rem;">
       <a href="/swamp-cooler-repair-gilbert-az/" class="city-card"><span class="city-icon">&#128205;</span><strong>Gilbert</strong></a>
       <a href="/swamp-cooler-repair-mesa-az/" class="city-card"><span class="city-icon">&#128205;</span><strong>Mesa</strong></a>
@@ -323,6 +410,28 @@
       <a href="/swamp-cooler-repair-san-tan-valley-az/" class="city-card"><span class="city-icon">&#128205;</span><strong>San Tan Valley</strong></a>
       <a href="/swamp-cooler-repair-tempe-az/" class="city-card"><span class="city-icon">&#128205;</span><strong>Tempe</strong></a>
       <a href="/swamp-cooler-repair-apache-junction-az/" class="city-card"><span class="city-icon">&#128205;</span><strong>Apache Junction</strong></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ PREVIEW ===================== -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Common Swamp Cooler Questions</h2>
+    <p class="section-sub">Quick answers for East Valley homeowners. <a href="/faq/">See all FAQs &rarr;</a></p>
+    <div class="faq-list">
+      <details><summary>What's the difference between an evaporative cooler and a swamp cooler?</summary>
+        <div class="faq-answer"><p>Nothing — they're the same thing. "Swamp cooler" is the common Southwest nickname; "evaporative cooler" is the technical term. Both pull hot air through water-soaked pads to drop temperature by 15–25°F in Arizona's dry climate.</p></div>
+      </details>
+      <details><summary>Why is my swamp cooler blowing hot air?</summary>
+        <div class="faq-answer"><p>Most common causes: a failed pump (pads aren't getting wet), clogged distribution tubing from hard water, outside temps above ~105°F, low fan speed, or worn pads that need replacement.</p></div>
+      </details>
+      <details><summary>What does evaporative cooler repair cost in Gilbert or Mesa?</summary>
+        <div class="faq-answer"><p>Typical ranges: pad replacement $75–$150, pump $100–$200, belt $75–$125, motor $200–$450, spring startup $75–$175. <a href="/blog/evaporative-cooler-repair-cost-gilbert-az/">See our full cost guide.</a></p></div>
+      </details>
+      <details><summary>How does AZ Swamp Cooler Repair work?</summary>
+        <div class="faq-answer"><p>Request a free quote or call — you'll get connected with an experienced local evaporative cooler repair pro serving your area. No charge to request help and no obligation to hire.</p></div>
+      </details>
     </div>
   </div>
 </section>

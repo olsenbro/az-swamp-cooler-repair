@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /thank-you/
 Sitemap: https://www.azswampcoolerrepair.com/sitemap.xml
+
+# LLM context: https://www.azswampcoolerrepair.com/llms.txt
