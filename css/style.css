@@ -167,7 +167,16 @@ tr:nth-child(even) td { background: var(--gray-50); }
 .hero-content { max-width: 600px; }
 .hero h1 { color: var(--white); font-size: clamp(1.7rem, 4.5vw, 2.6rem); margin-bottom: 0.8rem; }
 .hero-sub { font-size: 1.05rem; opacity: 0.92; margin-bottom: 1.4rem; line-height: 1.6; }
-.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.2rem; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+.trust-strip {
+  list-style: none; padding: 0; margin: 0 0 1rem;
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+}
+.trust-strip li {
+  display: flex; align-items: center; gap: 0.35rem;
+  font-size: 0.82rem; font-weight: 500; opacity: 0.95;
+}
+.trust-strip-icon { color: var(--orange); font-weight: 700; }
 .service-badge {
   display: inline-block; background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.3); border-radius: 999px;
@@ -273,6 +282,26 @@ tr:nth-child(even) td { background: var(--gray-50); }
 .service-card h3 { font-size: 0.95rem; margin: 0; color: var(--blue-dark); }
 
 @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* --- Common Problems Grid --- */
+.problems-grid {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 0.65rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+.problems-grid li {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 0.65rem 0.85rem;
+  font-size: 0.9rem; font-weight: 500; color: var(--blue-dark);
+  margin: 0;
+}
+.problems-cta { text-align: center; margin-top: 1.5rem; margin-bottom: 0; }
+@media (min-width: 768px) {
+  .problems-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .problems-grid { grid-template-columns: repeat(4, 1fr); }
+}
 
 /* ============================================================
    TRUST SECTION
