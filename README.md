@@ -11,7 +11,7 @@ Edit **`js/site-config.js`** — this is the single source of truth for:
 
 - **Call-tracking number** shown on the site (`phone.display`, `phone.tel`, `phone.e164`)
 - **Formspree form ID** (`forms.formspreeFormId`)
-- **Owner lead email** (`leads.ownerEmail`) — set as primary recipient in Formspree
+- **Owner lead email** (`leads.ownerEmail`) — public `info@`; route via Cloudflare Email Routing, and set as Formspree notification email
 - **Renter forwarding** (`leads.renterForwardEmail`, `leads.renterForwardingEnabled`)
 - **Forwarding note** for your records (`leads.forwardingNote`, `phone.callTracking.forwardingDestinationNote`)
 
@@ -33,18 +33,20 @@ Free plan: 50 submissions/month. Upgrade for unlimited and CC/workflow routing.
 
 ---
 
-## Set Up Email Forwarding (ImprovMX)
+## Set Up Email (Cloudflare Email Routing)
 
-So that `leads@azswampcoolerrepair.com` forwards to `ryano72@gmail.com`:
+Public contact address: **`info@azswampcoolerrepair.com`**
 
-1. Go to [improvmx.com](https://improvmx.com) — free plan works
-2. Add your domain `azswampcoolerrepair.com`
-3. Set up forwarding: `leads` → `ryano72@gmail.com`
-4. Add these DNS records at Vercel (Domain Settings → DNS):
-   - `MX` record: `@` → `mx1.improvmx.com` — Priority: `10`
-   - `MX` record: `@` → `mx2.improvmx.com` — Priority: `20`
-5. Wait 1–24 hours for DNS to propagate
-6. Test by sending an email to `leads@azswampcoolerrepair.com`
+Inbound mail is handled by **Cloudflare Email Routing** (domain DNS in Cloudflare):
+
+1. Cloudflare dashboard → **Email** → **Email Routing** → enable for `azswampcoolerrepair.com`
+2. **Routing rules** → create address: `info` → forward to your personal inbox (e.g. `ryano72@gmail.com`)
+3. Cloudflare adds the required MX records automatically — remove any old ImprovMX/other MX records if present
+4. Send a test email to `info@azswampcoolerrepair.com` and confirm delivery
+
+**Formspree:** Set the form’s notification email to `info@azswampcoolerrepair.com` so quote submissions match the public address.
+
+For additional niche sites, repeat the same pattern: one `info@` (or `contact@`) alias per domain in Cloudflare, all forwarding to the same owner inbox.
 
 ---
 

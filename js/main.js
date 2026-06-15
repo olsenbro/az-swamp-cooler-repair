@@ -95,6 +95,7 @@
 
   // --- Site config: phone + mailto from central config ---
   applySiteContact(config);
+  applyFooterNap(config);
   applyFormEndpoints(config);
 
   // --- Lead forms: tracking fields + routing metadata ---
@@ -136,13 +137,63 @@
     document.querySelectorAll('script[type="application/ld+json"]').forEach(function (script) {
       try {
         var data = JSON.parse(script.textContent.trim());
-        if (data.telephone) {
-          data.telephone = e164;
-          script.textContent = JSON.stringify(data);
-        }
+        patchJsonLd(data, cfg);
+        script.textContent = JSON.stringify(data);
       } catch (err) {
         /* ignore invalid JSON-LD blocks */
       }
+    });
+  }
+
+  function patchJsonLd(data, cfg) {
+    var e164 = cfg.phone && cfg.phone.e164;
+    var nap = cfg.nap || {};
+
+    function walk(node) {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) {
+        node.forEach(walk);
+        return;
+      }
+      if (node.telephone && e164) node.telephone = e164;
+      if (node.email && cfg.contactEmail) node.email = cfg.contactEmail;
+      if (node['@type'] === 'LocalBusiness' && node.address) {
+        if (nap.streetAddress) node.address.streetAddress = nap.streetAddress;
+        if (nap.addressLocality) node.address.addressLocality = nap.addressLocality;
+        if (nap.addressRegion) node.address.addressRegion = nap.addressRegion;
+        if (nap.postalCode) node.address.postalCode = nap.postalCode;
+        if (nap.addressCountry) node.address.addressCountry = nap.addressCountry;
+      }
+      Object.keys(node).forEach(function (key) {
+        if (key === '@context') return;
+        walk(node[key]);
+      });
+    }
+
+    walk(data);
+  }
+
+  function applyFooterNap(cfg) {
+    var nap = cfg.nap;
+    var brand = cfg.site && cfg.site.brandName;
+    var phone = cfg.phone;
+    if (!nap || !brand || !phone) return;
+
+    document.querySelectorAll('.footer-nap').forEach(function (el) {
+      var addressLine;
+      if (nap.streetAddress) {
+        addressLine = nap.streetAddress + '<br>' +
+          (nap.addressLocality || 'Mesa') + ', ' + (nap.addressRegion || 'AZ') + ' ' + (nap.postalCode || '');
+      } else {
+        addressLine = 'Service area: East Valley, Arizona<br>Mailing locality: Mesa, AZ';
+      }
+
+      el.innerHTML =
+        '<p class="footer-nap-title">Contact</p>' +
+        '<p class="footer-nap-name">' + brand + '</p>' +
+        '<p class="footer-nap-address">' + addressLine + '</p>' +
+        '<p class="footer-nap-phone"><a href="tel:' + phone.tel + '">' + phone.display + '</a></p>' +
+        '<p class="footer-nap-email"><a href="mailto:' + cfg.contactEmail + '">' + cfg.contactEmail + '</a></p>';
     });
   }
 

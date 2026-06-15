@@ -482,6 +482,12 @@ details[open] summary::after { content: '−'; }
   box-shadow: var(--shadow);
   border: 1px solid var(--gray-200);
 }
+.map-caption {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--gray-600);
+  text-align: center;
+}
 
 /* ============================================================
    FOOTER
@@ -497,6 +503,29 @@ details[open] summary::after { content: '−'; }
 .footer-col a:hover { color: var(--orange); text-decoration: none; }
 .footer-contact p { font-size: 0.9rem; margin-bottom: 0.4rem; }
 .footer-contact a { color: rgba(255,255,255,0.85); }
+.footer-nap {
+  margin-top: 1.75rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 0.25rem;
+  max-width: 420px;
+}
+.footer-nap-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.25rem;
+}
+.footer-nap-name { font-weight: 600; color: var(--white); font-size: 0.95rem; }
+.footer-nap-address,
+.footer-nap-phone,
+.footer-nap-email { font-size: 0.9rem; line-height: 1.5; margin: 0; }
+.footer-nap a { color: rgba(255,255,255,0.85); }
+.footer-nap a:hover { color: var(--orange); text-decoration: none; }
 .footer-bottom {
   margin-top: 2rem; padding-top: 1.5rem;
   border-top: 1px solid rgba(255,255,255,0.12);

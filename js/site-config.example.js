@@ -6,7 +6,15 @@ window.SITE_CONFIG = {
   site: {
     brandName: 'AZ Swamp Cooler Repair',
     domain: 'https://www.azswampcoolerrepair.com',
-    defaultService: 'Swamp cooler / evaporative cooler repair'
+    defaultService: 'Swamp cooler / evaporative cooler repair',
+    businessModel: 'lead_generation'
+  },
+  nap: {
+    streetAddress: 'PO Box 1234',
+    addressLocality: 'Mesa',
+    addressRegion: 'AZ',
+    postalCode: '85210',
+    addressCountry: 'US'
   },
   phone: {
     display: '(480) 555-0100',
@@ -17,13 +25,13 @@ window.SITE_CONFIG = {
       forwardingDestinationNote: 'Owner cell — change in call-tracking dashboard when renter changes'
     }
   },
-  contactEmail: 'leads@azswampcoolerrepair.com',
+  contactEmail: 'info@azswampcoolerrepair.com',
   forms: {
     formspreeFormId: 'YOUR_FORMSPREE_ID',
     thankYouPath: '/thank-you/'
   },
   leads: {
-    ownerEmail: 'leads@azswampcoolerrepair.com',
+    ownerEmail: 'info@azswampcoolerrepair.com',
     renterForwardEmail: 'renter@example.com',
     renterForwardingEnabled: true,
     forwardingNote: 'Leased to Example Cooler Co through 2026-12-31'

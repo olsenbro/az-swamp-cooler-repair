@@ -18,17 +18,29 @@
  *
  * FORM ROUTING SETUP
  * ------------------
- * 1. Set Formspree's primary notification email to `leads.ownerEmail`.
- * 2. When leasing to a renter, set `leads.renterForwardEmail` and enable
+ * 1. Public contact email is `contactEmail` (info@) — route via Cloudflare Email Routing.
+ * 2. Set Formspree's primary notification email to `leads.ownerEmail` (same as contactEmail).
+ * 3. When leasing to a renter, set `leads.renterForwardEmail` and enable
  *    `leads.renterForwardingEnabled`.
- * 3. On Formspree paid plans, CC forwarding uses the `_cc` field injected by main.js.
+ * 4. On Formspree paid plans, CC forwarding uses the `_cc` field injected by main.js.
  *    On free plans, forward manually from owner inbox or use a Formspree workflow.
  */
 window.SITE_CONFIG = {
   site: {
     brandName: 'AZ Swamp Cooler Repair',
     domain: 'https://www.azswampcoolerrepair.com',
-    defaultService: 'Swamp cooler / evaporative cooler repair'
+    defaultService: 'Swamp cooler / evaporative cooler repair',
+    /** 'lead_generation' = connects homeowners with independent local pros (this site). */
+    businessModel: 'lead_generation'
+  },
+
+  /** Mailing address for footer NAP and schema. PO Box is fine for service-area / lead-gen sites. */
+  nap: {
+    streetAddress: 'PO Box 30092',
+    addressLocality: 'Mesa',
+    addressRegion: 'AZ',
+    postalCode: '85275',
+    addressCountry: 'US'
   },
 
   phone: {
@@ -44,7 +56,7 @@ window.SITE_CONFIG = {
     }
   },
 
-  contactEmail: 'leads@azswampcoolerrepair.com',
+  contactEmail: 'info@azswampcoolerrepair.com',
 
   forms: {
     /** Formspree form ID — https://formspree.io/f/{formId} */
@@ -54,7 +66,7 @@ window.SITE_CONFIG = {
 
   leads: {
     /** Always receives lead notifications (Formspree primary inbox). */
-    ownerEmail: 'leads@azswampcoolerrepair.com',
+    ownerEmail: 'info@azswampcoolerrepair.com',
     /** Optional renter inbox when site is leased. Leave blank when not leased. */
     renterForwardEmail: '',
     /** When true, main.js adds Formspree _cc to renterForwardEmail if set. */
