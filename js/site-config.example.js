@@ -27,7 +27,7 @@ window.SITE_CONFIG = {
   },
   contactEmail: 'info@azswampcoolerrepair.com',
   forms: {
-    formspreeFormId: 'YOUR_FORMSPREE_ID',
+    siteId: 'YOUR_BROSITES_SITE_ID',
     thankYouPath: '/thank-you/'
   },
   leads: {

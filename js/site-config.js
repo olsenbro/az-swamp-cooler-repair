@@ -16,14 +16,12 @@
  *    where calls are going during the current lease period.
  * 5. Do NOT put the renter's company name on the public website.
  *
- * FORM ROUTING SETUP
- * ------------------
- * 1. Public contact email is `contactEmail` (info@) — route via Cloudflare Email Routing.
- * 2. Set Formspree's primary notification email to `leads.ownerEmail` (same as contactEmail).
- * 3. When leasing to a renter, set `leads.renterForwardEmail` and enable
- *    `leads.renterForwardingEnabled`.
- * 4. On Formspree paid plans, CC forwarding uses the `_cc` field injected by main.js.
- *    On free plans, forward manually from owner inbox or use a Formspree workflow.
+ * LEAD FORM SETUP
+ * ---------------
+ * 1. Set `forms.siteId` to your BroSites site ID (or set NEXT_PUBLIC_SITE_ID in Vercel;
+ *    the build script injects it before deploy).
+ * 2. Public contact email is `contactEmail` (info@) — route via Cloudflare Email Routing.
+ * 3. Lead delivery is handled by BroSites; use `leads.*` fields for internal routing notes.
  */
 window.SITE_CONFIG = {
   site: {
@@ -59,17 +57,17 @@ window.SITE_CONFIG = {
   contactEmail: 'info@azswampcoolerrepair.com',
 
   forms: {
-    /** Formspree form ID — https://formspree.io/f/{formId} */
-    formspreeFormId: 'xykanzba',
+    /** BroSites site ID — overridden at build time from NEXT_PUBLIC_SITE_ID on Vercel. */
+    siteId: '',
     thankYouPath: '/thank-you/'
   },
 
   leads: {
-    /** Always receives lead notifications (Formspree primary inbox). */
+    /** Primary owner inbox for your records. */
     ownerEmail: 'info@azswampcoolerrepair.com',
     /** Optional renter inbox when site is leased. Leave blank when not leased. */
     renterForwardEmail: '',
-    /** When true, main.js adds Formspree _cc to renterForwardEmail if set. */
+    /** When true, renter email is included in the lead message payload. */
     renterForwardingEnabled: false,
     /** Internal note stored on each submission for your records. */
     forwardingNote: 'Owner intake only — no active renter lease'

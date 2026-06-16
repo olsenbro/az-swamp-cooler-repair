@@ -10,8 +10,8 @@ A static lead-generation website connecting East Valley AZ homeowners with local
 Edit **`js/site-config.js`** — this is the single source of truth for:
 
 - **Call-tracking number** shown on the site (`phone.display`, `phone.tel`, `phone.e164`)
-- **Formspree form ID** (`forms.formspreeFormId`)
-- **Owner lead email** (`leads.ownerEmail`) — public `info@`; route via Cloudflare Email Routing, and set as Formspree notification email
+- **BroSites site ID** (`forms.siteId`) — or set `NEXT_PUBLIC_SITE_ID` in Vercel (injected at build)
+- **Owner lead email** (`leads.ownerEmail`) — public `info@`; route via Cloudflare Email Routing
 - **Renter forwarding** (`leads.renterForwardEmail`, `leads.renterForwardingEnabled`)
 - **Forwarding note** for your records (`leads.forwardingNote`, `phone.callTracking.forwardingDestinationNote`)
 
@@ -19,17 +19,19 @@ Do **not** hardcode a renter's direct phone number in HTML. Change the tracking 
 
 Copy `js/site-config.example.js` as a reference template.
 
-### 2. Set Up Formspree (Lead Form)
-1. Go to [formspree.io](https://formspree.io) and sign up with ryano72@gmail.com
-2. Create a new form — name it "AZ Swamp Cooler Repair Leads"
-3. Copy the 8-character form ID (e.g. `xyzabcde`)
-4. Set the Formspree form ID in **`js/site-config.js`** (`forms.formspreeFormId`)
+### 2. Set Up BroSites (Lead Form)
+1. In your BroSites dashboard, copy the **site ID** for this property.
+2. In Vercel → Project → Settings → Environment Variables, set:
+   - **`NEXT_PUBLIC_SITE_ID`** = your BroSites site ID (Production **and** Preview)
+3. On deploy, `npm run build` injects that value into **`js/site-config.js`** (`forms.siteId`).
 
-Free plan: 50 submissions/month. Upgrade for unlimited and CC/workflow routing.
+For local testing without Vercel, set `forms.siteId` directly in `js/site-config.js` (see `.env.example`).
 
-**Lead tracking fields** (page URL, landing page, city page, UTM params, gclid, etc.) are injected automatically by `js/main.js` on every `.lead-form` submit.
+Lead forms POST to `https://brosites.lovable.app/api/public/leads/{siteId}` via `js/main.js`. On success, visitors are redirected to `/thank-you/`.
 
-**When leasing to a renter:** set `renterForwardEmail`, enable `renterForwardingEnabled`, and update `forwardingNote`. On Formspree paid plans, renter CC is added via `_cc` automatically.
+**Lead tracking fields** (page URL, landing page, city page, UTM params, gclid, etc.) are included in the lead payload automatically on every `.lead-form` submit.
+
+**When leasing to a renter:** set `renterForwardEmail`, enable `renterForwardingEnabled`, and update `forwardingNote`. Renter routing metadata is included in the lead message sent to BroSites.
 
 ---
 
@@ -43,8 +45,6 @@ Inbound mail is handled by **Cloudflare Email Routing** (domain DNS in Cloudflar
 2. **Routing rules** → create address: `info` → forward to your personal inbox (e.g. `ryano72@gmail.com`)
 3. Cloudflare adds the required MX records automatically — remove any old ImprovMX/other MX records if present
 4. Send a test email to `info@azswampcoolerrepair.com` and confirm delivery
-
-**Formspree:** Set the form’s notification email to `info@azswampcoolerrepair.com` so quote submissions match the public address.
 
 For additional niche sites, repeat the same pattern: one `info@` (or `contact@`) alias per domain in Cloudflare, all forwarding to the same owner inbox.
 
@@ -66,8 +66,9 @@ git push -u origin main
 2. Go to [vercel.com](https://vercel.com) → New Project → Import from GitHub
 3. Select the `az-swamp-cooler-repair` repo
 4. Framework: Other (static site)
-5. No build command needed — it's pure HTML
-6. Deploy
+5. Build command: `npm run build` (injects `NEXT_PUBLIC_SITE_ID` into config — see `.env.example`)
+6. Set **`NEXT_PUBLIC_SITE_ID`** in Vercel environment variables before the first deploy
+7. Deploy
 
 Vercel auto-deploys every time you push to the main branch.
 
@@ -125,9 +126,11 @@ Since this is a static site, updating content means editing the HTML files direc
 /robots.txt                 Crawler instructions
 /vercel.json                Clean URLs config
 /css/style.css              All styles
-/js/site-config.js          Phone, Formspree, owner/renter lead routing config
+/js/site-config.js          Phone, BroSites site ID, owner/renter lead routing config
 /js/site-config.example.js  Config template
-/js/main.js                 Mobile menu, lead tracking fields, phone from config
+/js/main.js                 Mobile menu, BroSites lead submit, tracking fields, phone from config
+/scripts/inject-site-id.js  Injects NEXT_PUBLIC_SITE_ID at Vercel build time
+/.env.example               Documents NEXT_PUBLIC_SITE_ID for local/Vercel setup
 ```
 
 ---

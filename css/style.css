@@ -235,6 +235,29 @@ tr:nth-child(even) td { background: var(--gray-50); }
 .form-submit .btn { width: 100%; text-align: center; font-size: 1rem; padding: 0.8em 1em; }
 .form-note { font-size: 0.8rem; color: var(--gray-400); text-align: center; margin-top: 0.4rem; }
 
+.form-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  z-index: 9999;
+  max-width: min(92vw, 420px);
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--white);
+  background: #b42318;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.form-toast.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
 /* Standalone form section */
 .form-section { background: var(--gray-50); padding: 3rem 0; }
 .form-section-inner { max-width: 680px; margin: 0 auto; }
@@ -415,6 +438,58 @@ summary::after { content: '+'; font-size: 1.3rem; color: var(--orange); flex-shr
 details[open] summary::after { content: '−'; }
 .faq-answer { padding: 0 1.1rem 1rem; font-size: 0.95rem; line-height: 1.7; color: var(--gray-600); border-top: 1px solid var(--gray-100); padding-top: 0.75rem; }
 .faq-answer p:last-child { margin-bottom: 0; }
+
+/* Quick answers & direct answer blocks (AEO) */
+.direct-answers-grid,
+.quick-answers-list {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.direct-answer,
+.quick-answer {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow);
+}
+.section-alt .direct-answer {
+  background: var(--white);
+}
+.direct-answer h3,
+.quick-answer h3 {
+  color: var(--blue-dark);
+  font-size: 1.05rem;
+  margin: 0 0 0.65rem;
+}
+.direct-answer p,
+.quick-answer p {
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--gray-600);
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .direct-answers-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.map-heading {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: var(--blue-dark);
+}
+.service-hero-image {
+  margin-top: 2rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.service-hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
 /* ============================================================
    HOW IT WORKS STEPS (inline)

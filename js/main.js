@@ -96,17 +96,16 @@
   // --- Site config: phone + mailto from central config ---
   applySiteContact(config);
   applyFooterNap(config);
-  applyFormEndpoints(config);
 
-  // --- Lead forms: tracking fields + routing metadata ---
-  var forms = document.querySelectorAll('.lead-form');
+  // --- Lead forms: BroSites AJAX submit (never native POST) ---
+  var forms = document.querySelectorAll('form[data-bs-form]');
   forms.forEach(function (form) {
+    form.setAttribute('action', '/__bs_submit');
+    form.setAttribute('method', 'post');
     ensureLeadTrackingFields(form);
-    form.addEventListener('submit', function () {
-      populateLeadTrackingFields(form);
-      applyLeadRoutingFields(form, config);
-      ensureThankYouRedirect(form, config);
-    });
+    form.addEventListener('submit', function (e) {
+      handleLeadFormSubmit(e, form);
+    }, true);
   });
 
   function applySiteContact(cfg) {
@@ -164,6 +163,9 @@
         if (nap.postalCode) node.address.postalCode = nap.postalCode;
         if (nap.addressCountry) node.address.addressCountry = nap.addressCountry;
       }
+      if (node.provider && node.provider['@type'] === 'LocalBusiness' && node.provider.telephone && e164) {
+        node.provider.telephone = e164;
+      }
       Object.keys(node).forEach(function (key) {
         if (key === '@context') return;
         walk(node[key]);
@@ -201,15 +203,151 @@
     return /(\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}/.test(text || '');
   }
 
-  function applyFormEndpoints(cfg) {
-    if (!cfg.forms || !cfg.forms.formspreeFormId) return;
-    var action = 'https://formspree.io/f/' + cfg.forms.formspreeFormId;
-    document.querySelectorAll('.lead-form').forEach(function (form) {
-      if (!form.getAttribute('action') || form.getAttribute('action').indexOf('formspree.io') !== -1) {
-        form.setAttribute('action', action);
-        form.setAttribute('method', 'POST');
-      }
+  function getBroSitesSiteId() {
+    return (window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.siteId) || '';
+  }
+
+  function getThankYouUrl() {
+    var cfg = window.SITE_CONFIG || {};
+    return (cfg.forms && cfg.forms.thankYouPath) || '/thank-you/';
+  }
+
+  function getFormValue(form, name) {
+    var input = form.querySelector('[name="' + name + '"]');
+    return input ? (input.value || '').trim() : '';
+  }
+
+  function buildLeadMessage(form, cfg) {
+    var lines = [];
+    var city = getFormValue(form, 'city');
+    var coolerType = getFormValue(form, 'cooler_type');
+    var problem = getFormValue(form, 'problem');
+    var urgency = getFormValue(form, 'urgency');
+    var leads = cfg.leads || {};
+
+    if (city) lines.push('City: ' + city);
+    if (coolerType) lines.push('Cooler type: ' + coolerType);
+    if (problem) lines.push('Problem: ' + problem);
+    if (urgency) lines.push('Urgency: ' + urgency);
+
+    if (leads.ownerEmail) lines.push('Owner email: ' + leads.ownerEmail);
+    if (leads.renterForwardingEnabled && leads.renterForwardEmail) {
+      lines.push('Renter forward email: ' + leads.renterForwardEmail);
+    }
+    if (leads.forwardingNote) lines.push('Forwarding note: ' + leads.forwardingNote);
+
+    var phoneCfg = cfg.phone || {};
+    var callTracking = phoneCfg.callTracking || {};
+    if (callTracking.forwardingDestinationNote) {
+      lines.push('Call tracking note: ' + callTracking.forwardingDestinationNote);
+    }
+
+    TRACKING_FIELDS.forEach(function (key) {
+      var value = getFormValue(form, key);
+      if (value) lines.push(key + ': ' + value);
     });
+
+    return lines.join('\n');
+  }
+
+  function buildLeadPayload(form) {
+    var cfg = window.SITE_CONFIG || config;
+    populateLeadTrackingFields(form);
+    applyLeadRoutingFields(form, cfg);
+
+    var firstName = getFormValue(form, 'first_name');
+    var lastName = getFormValue(form, 'last_name');
+    var name = (firstName + ' ' + lastName).trim();
+
+    return {
+      name: name,
+      email: getFormValue(form, 'email'),
+      phone: getFormValue(form, 'phone'),
+      message: buildLeadMessage(form, cfg),
+      session_id: typeof window !== 'undefined' ? (window.__bs_session_id || null) : null
+    };
+  }
+
+  function ensureFormToast() {
+    var toast = document.getElementById('form-toast');
+    if (toast) return toast;
+
+    toast = document.createElement('div');
+    toast.id = 'form-toast';
+    toast.className = 'form-toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    document.body.appendChild(toast);
+    return toast;
+  }
+
+  var toastHideTimer;
+
+  function showFormError(message) {
+    var toast = ensureFormToast();
+    toast.textContent = message || 'Something went wrong. Please try again or call us directly.';
+    toast.classList.add('is-visible');
+    clearTimeout(toastHideTimer);
+    toastHideTimer = setTimeout(function () {
+      toast.classList.remove('is-visible');
+    }, 5000);
+  }
+
+  function setSubmitting(form, isSubmitting) {
+    var button = form.querySelector('button[type="submit"]');
+    if (!button) return;
+    if (isSubmitting) {
+      if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent;
+      }
+      button.disabled = true;
+      button.textContent = 'Sending…';
+    } else {
+      button.disabled = false;
+      if (button.dataset.originalText) {
+        button.textContent = button.dataset.originalText;
+      }
+    }
+  }
+
+  function handleLeadFormSubmit(e, form) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var siteId = getBroSitesSiteId();
+    if (!siteId) {
+      showFormError('Lead form is not configured yet. Please call us instead.');
+      return;
+    }
+
+    if (typeof form.reportValidity === 'function' && !form.reportValidity()) {
+      return;
+    }
+
+    var payload = buildLeadPayload(form);
+    var endpoint = 'https://brosites.lovable.app/api/public/leads/' + encodeURIComponent(siteId);
+    setSubmitting(form, true);
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('Lead submission failed with status ' + response.status);
+        }
+        form.reset();
+        populateLeadTrackingFields(form);
+        applyLeadRoutingFields(form, window.SITE_CONFIG || config);
+        window.location.href = getThankYouUrl();
+      })
+      .catch(function () {
+        showFormError('We could not send your request. Please try again or call us directly.');
+      })
+      .finally(function () {
+        setSubmitting(form, false);
+      });
   }
 
   function ensureLeadTrackingFields(form) {
@@ -312,9 +450,9 @@
     });
 
     try {
-      setHiddenValue(form, 'session_id', sessionStorage.getItem('_sid') || '');
+      setHiddenValue(form, 'session_id', window.__bs_session_id || sessionStorage.getItem('_sid') || '');
     } catch (err) {
-      setHiddenValue(form, 'session_id', '');
+      setHiddenValue(form, 'session_id', window.__bs_session_id || '');
     }
   }
 
@@ -328,33 +466,6 @@
     setHiddenValue(form, 'renter_forwarding_enabled', leads.renterForwardingEnabled ? 'yes' : 'no');
     setHiddenValue(form, 'forwarding_note', leads.forwardingNote || '');
     setHiddenValue(form, 'call_tracking_note', callTracking.forwardingDestinationNote || '');
-
-    if (leads.renterForwardingEnabled && leads.renterForwardEmail) {
-      var cc = form.querySelector('input[name="_cc"]');
-      if (!cc) {
-        cc = document.createElement('input');
-        cc.type = 'hidden';
-        cc.name = '_cc';
-        form.appendChild(cc);
-      }
-      cc.value = leads.renterForwardEmail;
-    } else {
-      var existingCc = form.querySelector('input[name="_cc"]');
-      if (existingCc) existingCc.remove();
-    }
-  }
-
-  function ensureThankYouRedirect(form, cfg) {
-    var thankYou = (cfg.site && cfg.site.domain ? cfg.site.domain : window.location.origin) +
-      ((cfg.forms && cfg.forms.thankYouPath) || '/thank-you/');
-    var nextInput = form.querySelector('input[name="_next"]');
-    if (!nextInput) {
-      nextInput = document.createElement('input');
-      nextInput.type = 'hidden';
-      nextInput.name = '_next';
-      form.appendChild(nextInput);
-    }
-    nextInput.value = thankYou;
   }
 
   // Populate tracking fields on load so values exist even if JS submit hooks fail
