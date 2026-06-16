@@ -264,7 +264,7 @@
       email: getFormValue(form, 'email'),
       phone: getFormValue(form, 'phone'),
       message: buildLeadMessage(form, cfg),
-      session_id: typeof window !== 'undefined' ? (window.__bs_session_id || null) : null
+      session_id: (typeof window !== 'undefined' && window.__bs_session_id) ? window.__bs_session_id : null
     };
   }
 
@@ -449,11 +449,7 @@
       setHiddenValue(form, key, getStored(key));
     });
 
-    try {
-      setHiddenValue(form, 'session_id', window.__bs_session_id || sessionStorage.getItem('_sid') || '');
-    } catch (err) {
-      setHiddenValue(form, 'session_id', window.__bs_session_id || '');
-    }
+    setHiddenValue(form, 'session_id', window.__bs_session_id || '');
   }
 
   function applyLeadRoutingFields(form, cfg) {
