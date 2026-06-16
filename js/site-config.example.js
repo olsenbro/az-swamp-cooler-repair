@@ -4,7 +4,7 @@
  */
 window.SITE_CONFIG = {
   site: {
-    brandName: 'AZ Swamp Cooler Repair',
+    brandName: 'East Valley Swamp Cooler Repair',
     domain: 'https://www.azswampcoolerrepair.com',
     defaultService: 'Swamp cooler / evaporative cooler repair',
     businessModel: 'lead_generation'

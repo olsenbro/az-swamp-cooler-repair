@@ -99,8 +99,8 @@ Since this is a static site, updating content means editing the HTML files direc
 
 **To add a new blog post:**
 1. Create a new folder: `blog/your-post-slug/`
-2. Copy an existing blog post's `index.html` as a starting point
-3. Update the title, meta description, H1, and body content
+2. Copy `blog/post-template.html` to `blog/your-post-slug/index.html`
+3. Replace placeholders: `{{PAGE_TITLE}}`, `{{META_DESCRIPTION}}`, `{{CANONICAL_URL}}`, `{{HEADLINE}}`, `{{BREADCRUMB_SHORT}}`, and post body. Set `{{DATE_PUBLISHED}}` and `{{DATE_MODIFIED}}` to `YYYY-MM-DD` (use `2026-06-01` until exact dates are known). The Article JSON-LD in `<head>` must use the same headline, description, and URL as the page.
 4. Add a card for it in `blog/index.html`
 5. Add it to `sitemap.xml`
 6. Push to GitHub

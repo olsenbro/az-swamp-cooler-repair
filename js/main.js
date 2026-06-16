@@ -1,4 +1,4 @@
-// AZ Swamp Cooler Repair — Main JS
+// East Valley Swamp Cooler Repair — Main JS
 
 (function () {
   'use strict';

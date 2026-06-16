@@ -1,9 +1,9 @@
 /**
- * AZ Swamp Cooler Repair — site configuration
+ * East Valley Swamp Cooler Repair — site configuration
  *
  * Edit this file to change phone routing, form routing, and lead delivery
  * without rewriting page copy. The public site stays branded as
- * AZ Swamp Cooler Repair even when calls/forms are leased to one renter.
+ * East Valley Swamp Cooler Repair even when calls/forms are leased to one renter.
  *
  * CALL TRACKING SETUP
  * -------------------
@@ -25,7 +25,7 @@
  */
 window.SITE_CONFIG = {
   site: {
-    brandName: 'AZ Swamp Cooler Repair',
+    brandName: 'East Valley Swamp Cooler Repair',
     domain: 'https://www.azswampcoolerrepair.com',
     defaultService: 'Swamp cooler / evaporative cooler repair',
     /** 'lead_generation' = connects homeowners with independent local pros (this site). */
